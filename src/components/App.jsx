@@ -22,15 +22,16 @@ const  App = () => {
     setLargeImageURL(event);
   };
 
-  const handleFormSubmit = (name) => {
-    if (name === name) {
-      toast.error('You enter the same word!!! Enter a new one!!!', {
+  const handleFormSubmit = (newName) => {
+    if (newName === name) {
+      toast.error('You entered the same word!!! Enter a new one!!!', {
         theme: 'colored',
       });
+    } else {
+      setName(newName);
+      setPage(1);
+  setImages([]);
     }
-    setName(name);
-    setPage(1);
-    setImages([]);
   };
 
   const searchArticles = async () => {
@@ -46,7 +47,7 @@ const  App = () => {
           theme: 'colored',
         });
       }
-    } catch (error) {
+    } catch {
       setError(error);
     } finally {
       setLoading(false);
@@ -86,3 +87,9 @@ const  App = () => {
 }
 
 export default App;
+
+
+
+
+
+
