@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
-import  {fetchPictures}  from '../api';
-import  Searchbar  from './Searchbar/Searchbar';
+import { fetchPictures } from '../api';
+import Searchbar from './Searchbar/Searchbar';
 import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-import  Modal  from './Modal/Modal';
+import Modal from './Modal/Modal';
 
-const  App = () => {
+const App = () => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -18,11 +18,11 @@ const  App = () => {
   const [largeImageURL, setLargeImageURL] = useState('');
   const [totalImages, setTotalImages] = useState(0);
 
-  const imgInfo = (event) => {
+  const imgInfo = event => {
     setLargeImageURL(event);
   };
 
-  const handleFormSubmit = (newName) => {
+  const handleFormSubmit = newName => {
     if (newName === name) {
       toast.error('You entered the same word!!! Enter a new one!!!', {
         theme: 'colored',
@@ -30,38 +30,38 @@ const  App = () => {
     } else {
       setName(newName);
       setPage(1);
-  setImages([]);
-    }
-  };
-
-  const searchArticles = async () => {
-    setLoading(true);
-
-    try {
-      const { data } = await fetchPictures(name, page);
-      setImages((prevImages) => [...prevImages, ...data.hits]);
-      setTotalImages(data.totalHits);
-
-      if (data.totalHits === 0) {
-        toast.error(`No images with name "${name}"`, {
-          theme: 'colored',
-        });
-      }
-    } catch {
-      setError(error);
-    } finally {
-      setLoading(false);
+      setImages([]);
     }
   };
 
   useEffect(() => {
+    const searchArticles = async () => {
+      setLoading(true);
+
+      try {
+        const { data } = await fetchPictures(name, page);
+        setImages(prevImages => [...prevImages, ...data.hits]);
+        setTotalImages(data.totalHits);
+
+        if (data.totalHits === 0) {
+          toast.error(`No images with name "${name}"`, {
+            theme: 'colored',
+          });
+        }
+      } catch {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (name !== '' || page !== 1) {
       searchArticles();
     }
-  }, [name, page]);
+  }, [name, page, error]);
 
   const loadMoreImages = () => {
-    setPage((prevPage) => prevPage + 1);
+    setPage(prevPage => prevPage + 1);
   };
 
   const toggleModal = () => {
@@ -74,7 +74,11 @@ const  App = () => {
     <div className="App">
       <Searchbar onSubmitForm={handleFormSubmit} />
       {images.length > 0 && (
-        <ImageGallery images={images} showModal={toggleModal} imgInfo={imgInfo} />
+        <ImageGallery
+          images={images}
+          showModal={toggleModal}
+          imgInfo={imgInfo}
+        />
       )}
       {loading && <Loader loading={loading} />}
 
@@ -84,12 +88,6 @@ const  App = () => {
       {showModal && <Modal onClose={toggleModal} largeImage={largeImageURL} />}
     </div>
   );
-}
+};
 
 export default App;
-
-
-
-
-
-
