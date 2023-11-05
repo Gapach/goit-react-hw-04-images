@@ -46,7 +46,7 @@ const  App = () => {
           theme: 'colored',
         });
       }
-    } catch  {
+    } catch (error) {
       setError(error);
     } finally {
       setLoading(false);
