@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const Searchbar = ({ onSubmitForm }) => {
   const [name, setName] = useState('');
-  const [pictures, setPictures] = useState([]);
+  // const [pictures, setPictures] = useState([]);
 
   const handleSubmit = evt => {
     evt.preventDefault();
